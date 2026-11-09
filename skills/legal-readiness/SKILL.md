@@ -1,6 +1,6 @@
 ---
 name: legal-readiness
-description: Audit a vibe-coded web app for the legal and privacy basics and put the missing pieces in place — privacy policy, terms & conditions, cookie consent, legal basis, marketing consent, data deletion, data retention, data processing agreements, third-party disclosure, data security, data breach procedure, intellectual property, open-source licences, payments & subscriptions. Use before launching an app, when adding sign-up, analytics, a newsletter, payments or a new third-party service, or when the user asks "is my app legal", "do I need a privacy policy / cookie banner", "GDPR", "CASL", "PIPEDA" or "what do I need before I launch".
+description: Audit a vibe-coded web app for the legal and privacy basics and put the missing pieces in place — privacy policy, terms & conditions, cookie consent, legal basis, marketing consent, data deletion, data retention, data processing agreements, third-party disclosure, data security, data breach procedure, intellectual property, open-source licences, payments & subscriptions. Use before launching an app, when adding sign-up, analytics, a newsletter, payments or a new third-party service, or when the user asks "is my app legal", "do I need a privacy policy / cookie banner", "GDPR", "CASL", "PIPEDA", "how do I not get sued", "limit my liability" or "what do I need before I launch".
 ---
 
 # Legal readiness for vibe-coded apps
@@ -11,6 +11,7 @@ You are not a lawyer and neither is this skill. Say so once, plainly. Produce ho
 
 ## Rules
 
+0. **Never promise the owner they can't be sued.** Nobody can. Say what lowers the risk and what doesn't.
 1. **Describe reality, never aspirations.** A policy that says "we encrypt everything" when the code doesn't is worse than no policy. Every claim must trace to code or config you read.
 2. **Never invent facts** about the owner: company name, address, jurisdiction, retention periods, refund terms. Ask, or leave a visible `TODO(owner)` and list it in the report.
 3. **Collect less first.** The cheapest fix for most gaps is deleting the field, tracker or vendor.
@@ -34,7 +35,15 @@ Write it as a table: `data | where collected | why | where stored | sent to | ke
 
 ### 2. Decide which laws are in play
 
-Ask where the owner is based and where users are. Defaults: EU/UK users → GDPR and ePrivacy; Canada → PIPEDA or provincial law, CASL for email; California → CCPA/CPRA; any US → CAN-SPAM, FTC auto-renewal rules. If unsure, build to GDPR for privacy and CASL for email — the strictest common bar.
+Ask where the owner is based and where users are. Then load the matching pack:
+
+| Jurisdiction | Pack | Status |
+| --- | --- | --- |
+| Canada | [references/jurisdictions/canada.md](references/jurisdictions/canada.md) | Ready |
+| United States | [references/jurisdictions/united-states.md](references/jurisdictions/united-states.md) | Underway |
+| European Union / UK | [references/jurisdictions/european-union.md](references/jurisdictions/european-union.md) | Underway |
+
+A pack says which laws apply, **what each document must include**, and how to lower the owner's liability. The owner's home jurisdiction sets the governing law; users' locations add obligations on top. Where a pack is only underway, say so and fall back to the general checklist.
 
 ### 3. Audit the fourteen areas
 
@@ -50,7 +59,7 @@ Do not mark something "in effect" because a page exists. Check the mechanism.
 
 1. **Stop the bleeding:** trackers firing before consent, secrets in the repo, card data touching the server, marketing email without opt-in or unsubscribe.
 2. **Build mechanisms:** consent banner that actually blocks scripts, unsubscribe, delete-my-account, retention job, verified payment webhooks.
-3. **Write the pages** from the data map, using [references/page-templates.md](references/page-templates.md). One page per area, or sections of one page for a small app. Link them from the footer.
+3. **Write the pages** from the data map, using [references/page-templates.md](references/page-templates.md) and the "What to include" lists in the jurisdiction pack. One page per area, or sections of one page for a small app. Link them from the footer.
 4. **Add tripwires** so the pages can't silently go stale — see [references/tripwires.md](references/tripwires.md).
 
 Each page ends with an **"If this changes"** section: the rules that apply before the next feature (accounts, analytics, payments) is added. That is what lets a static site be ready ahead of time.
@@ -62,7 +71,7 @@ Give the user:
 - the data map
 - a 14-row table: area · status · what you did · what's left
 - every `TODO(owner)` and every commitment the pages now make on their behalf (response times, retention periods, refund terms, governing law), so they can confirm each one
-- what needs a lawyer
+- what needs a lawyer, and what only the owner can do (business structure, insurance)
 
 ## Red flags — stop and tell the user
 
